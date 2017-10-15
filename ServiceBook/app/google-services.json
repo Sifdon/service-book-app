@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "281278533258",
+    "firebase_url": "https://the-services-project.firebaseio.com",
+    "project_id": "the-services-project",
+    "storage_bucket": "the-services-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281278533258:android:05d8f4590c012258",
+        "android_client_info": {
+          "package_name": "com.srinathv.servicebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "281278533258-kterp7rpj8mlsc5pcsfnu1r65f37i607.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCORdO5AxnG2_kDz18iLPbE6UMGhEyBUzs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
