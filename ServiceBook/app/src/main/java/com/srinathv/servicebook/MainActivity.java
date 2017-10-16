@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String name = "",email="";
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
+            Toast.makeText(this, "SIGN IN SUCCESS!!!!", Toast.LENGTH_SHORT).show();
             GoogleSignInAccount acct = result.getSignInAccount();
             name = acct.getDisplayName();
             email = acct.getEmail();
