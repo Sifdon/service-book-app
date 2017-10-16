@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "281278533258-0ll9hli6vb8lfkfu12474q2r9oid58uc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.srinathv.servicebook",
+            "certificate_hash": "864808bbb11eb2866b3fd7242d841734b1a82fbd"
+          }
+        },
+        {
           "client_id": "281278533258-kterp7rpj8mlsc5pcsfnu1r65f37i607.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "281278533258-kterp7rpj8mlsc5pcsfnu1r65f37i607.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -19,6 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
@@ -26,12 +28,17 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     public GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
@@ -40,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
                 Toast.makeText(MainActivity.this, "Check your internet connection.", Toast.LENGTH_SHORT).show();
             }
-        }).addApi(Auth.GOOGLE_SIGN_IN_API).build();
+        }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         final SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
@@ -53,28 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        final EditText e1 = (EditText) findViewById(R.id.edt1);
-        final EditText e2 = (EditText) findViewById(R.id.edt2);
-        final EditText e3 = (EditText) findViewById(R.id.edt3);
-
-                Button b = (Button) findViewById(R.id.button);
-        b.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                String name = e1.getText().toString();
-                String email = e2.getText().toString();
-                String phone = e3.getText().toString();
-                if(name.length()!=0 && email.length()!=0 && phone.length()!=0){
-
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Please enter all details.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
 
     }
 
@@ -101,13 +86,20 @@ public class MainActivity extends AppCompatActivity {
             // Signed in successfully, show authenticated UI.
             Toast.makeText(this, "SIGN IN SUCCESS!!!!", Toast.LENGTH_SHORT).show();
             GoogleSignInAccount acct = result.getSignInAccount();
-            name = acct.getDisplayName();
-            email = acct.getEmail();
             Toast.makeText(this, acct.getDisplayName()+"   "+acct.getEmail(), Toast.LENGTH_SHORT).show();
+
        //     updateUI(true);
         } else {
             // Signed out
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
     }
 
 }
