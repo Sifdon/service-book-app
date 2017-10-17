@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/indianmistry"
-        android:text="Indian Mistry"
+        android:text="Indian Mistrry"
         android:textAlignment="center"
         android:layout_alignRight="@+id/img1"
         android:textSize="40sp"
