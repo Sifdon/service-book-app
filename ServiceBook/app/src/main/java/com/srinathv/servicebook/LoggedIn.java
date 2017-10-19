@@ -18,35 +18,39 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoggedIn extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
 
         mAuth = FirebaseAuth.getInstance();
+        if((getIntent().getStringExtra("done")).equals("done2")) {
+            String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+            final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-        String name = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-        User u = new User();
-        u.setmail(email);
-        u.setname(name);
-
-        FirebaseDatabase.getInstance().getReference("users").child(uid).setValue(u);
-
+            User u = new User();
+            u.setmail(email);
+            u.setname(name);
+            u.setuid(uid);
+            u.setphone(getIntent().getStringExtra("number"));
+            FirebaseDatabase.getInstance().getReference("users").child(uid + "").setValue(u);
+        }
 
 
         ((ImageView) findViewById(R.id.imgmenu)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
+                Intent pqrst = new Intent(getApplicationContext(),ListOfItems.class);
+                startActivity(pqrst);
             }
         });
 

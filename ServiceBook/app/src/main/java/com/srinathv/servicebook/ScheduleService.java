@@ -115,15 +115,16 @@ public class ScheduleService extends AppCompatActivity {
                     FirebaseDatabase.getInstance().getReference("services").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            int ddd = 0;
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 service s = snapshot.getValue(service.class);
-                                ddd = Integer.parseInt(s.servid);
+                                if(s.servid.substring(0,2).equals("IM")) ddd = Integer.parseInt(s.servid.substring(2));
+                                else ddd = Integer.parseInt(s.servid);
                             }
+
                             if(ddd==0)
                                 ddd = (new Random()).nextInt(50);
                             else
-                                ddd = ddd +( (new Random()).nextInt(50) );
+                                ddd = ddd +(10 + (new Random()).nextInt(50) );
 
                             s.setdesc(description);
                             s.setname(serv);
@@ -133,8 +134,30 @@ public class ScheduleService extends AppCompatActivity {
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid()+"";
                             s.setuid(uid);
                             FirebaseDatabase.getInstance().getReference("services").child(ddd+"").setValue(s);
+                            final int abcdef = ddd;
+
+                            FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        User us = snapshot.getValue(User.class);
+                                        if(us.uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                            String allbookings = us.bookings+","+abcdef;
+                                            Log.v("whatishappening",abcdef+"");
+                                            FirebaseDatabase.getInstance().getReference("users/"+FirebaseAuth.getInstance().getCurrentUser().getUid()).child("bookings").setValue(allbookings);
+                                            break;
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Toast.makeText(ScheduleService.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                             Toast.makeText(ScheduleService.this, "Service has been booked.", Toast.LENGTH_SHORT).show();
                             Intent xyz = new Intent(getApplicationContext(),LoggedIn.class);
+                            xyz.putExtra("done","notdone");
                             startActivity(xyz);
                         }
 
@@ -143,6 +166,8 @@ public class ScheduleService extends AppCompatActivity {
                             Toast.makeText(ScheduleService.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
                 }
                 else{
                     Toast.makeText(ScheduleService.this, "Please enter all details.", Toast.LENGTH_SHORT).show();

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ServiceBook</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="instant_validation">(instant validation)</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="signed_in">Signed In</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+
 </resources>

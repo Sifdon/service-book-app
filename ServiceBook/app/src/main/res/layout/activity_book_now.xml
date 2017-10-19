@@ -33,22 +33,21 @@
         android:id="@+id/txtloc"
         android:layout_width="351dp"
         android:layout_height="112dp"
-        android:text=" "
-        android:textAlignment="center"
+        android:text="Click on the above button to set your location."
         android:textSize="20sp"
         android:layout_marginLeft="17dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="17dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt2" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/buttloc" />
 
-    <TextView
-        android:id="@+id/txt2"
+    <Button
+        android:id="@+id/buttloc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address from Google location API:"
+        android:text="Set my location"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="7dp"
         app:layout_constraintTop_toBottomOf="@+id/edtdesc"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -59,7 +58,7 @@
         android:layout_height="wrap_content"
         android:text="Enter a landmark:"
         android:textStyle="bold"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/txtloc"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
@@ -71,19 +70,19 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:text=""
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="15dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/book"
+        android:layout_width="78dp"
+        android:layout_height="38dp"
         android:text="book"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@+id/edtland"
-        android:layout_marginLeft="148dp"
+        android:layout_marginLeft="153dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

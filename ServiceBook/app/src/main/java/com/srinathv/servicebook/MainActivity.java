@@ -9,6 +9,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
 
@@ -47,11 +48,56 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_main);
+        final TextView txtstatus = (TextView) findViewById(R.id.txtstat);
+        final SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        txtstatus.setVisibility(View.INVISIBLE);
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            //user has logged in to firebase with Google
+            if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals("asdasdsad asdsadsa")){// <-- enter the mechanic's user id here
+                Intent xyz = new Intent(getApplicationContext(),MechanicActivity.class);
+                startActivity(xyz);
+                finish();
+            }
+            else{
+                txtstatus.setVisibility(View.VISIBLE);
+                FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                User us = snapshot.getValue(User.class);
+                                if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(us.uid)) {
+                                    if (us.phone.equals("")) {
+                                        Intent pqr = new Intent(getApplicationContext(),PhoneOTP.class);
+                                        startActivity(pqr);
+                                        finish();
+                                    }
+                                    else{
+                                        NormalUserActivity();
+                                        finish();
+                                    }
+                                    break;
+                                }
+                            }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(MainActivity.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            Intent abcd = new Intent(getApplicationContext(),LoggedIn.class);
-            startActivity(abcd);
-            finish();
+        }
+        else{
+            // user has not signed in. He has to sign in.
+            signInButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    switch(view.getId()){
+                        case R.id.sign_in_button:signIn();
+                            break;
+                    }
+                }
+            });
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -65,18 +111,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-        final SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+    }
 
-        signInButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                switch(view.getId()){
-                    case R.id.sign_in_button:signIn();
-                        break;
-                }
-            }
-        });
-
+    private void NormalUserActivity(){
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            Intent abcd = new Intent(getApplicationContext(),LoggedIn.class);
+            abcd.putExtra("done","done");
+            startActivity(abcd);
+            finish();
+        }
     }
 
     private void signIn() {
@@ -94,17 +137,13 @@ public class MainActivity extends AppCompatActivity {
                 // Signed in successfully, show authenticated UI.
                 try {
                     GoogleSignInAccount acct = result.getSignInAccount();
-
-                    Intent i = new Intent(getApplicationContext(),LoggedIn.class);
-                    startActivity(i);
-                    finish();
                     firebaseAuthWithGoogle(acct);
                 }
                 catch(Exception e){
-                    Toast.makeText(this, e.getMessage()+" THIS ONE", Toast.LENGTH_LONG).show();
+                    Log.v("happen",e.getMessage());
                 }
             } else {
-                Toast.makeText(this, "Google account has signed out.", Toast.LENGTH_SHORT).show();
+                Log.v("happen","Google account has signed out");
                 // Signed out
             }
         }
@@ -115,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount ac){
@@ -126,16 +164,43 @@ public class MainActivity extends AppCompatActivity {
 
                 if(task.isSuccessful()){
                     //sign in success
-                    Log.v("TAG2","Sign in with credentials success");
-                    FirebaseUser us = mAuth.getCurrentUser();
-
-              //      Log.v("TAG2",FirebaseAuth.getInstance().getCurrentUser().getUid()+"");
-              //      Log.v("TAG2",FirebaseAuth.getInstance().getCurrentUser().getEmail()+"");
-              //      Log.v("TAG2",FirebaseAuth.getInstance().getCurrentUser().getDisplayName()+"");
+                    if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals("ahdgasjgd adasd ")){
+                        Intent xyz = new Intent(getApplicationContext(),MechanicActivity.class);
+                        startActivity(xyz);
+                        finish();
+                    }
+                    else {
+                        FirebaseDatabase.getInstance().getReference("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    User us = snapshot.getValue(User.class);
+                                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(us.uid)) {
+                                        if (!us.phone.equals("")) {
+                                            Intent pqr = new Intent(getApplicationContext(),PhoneOTP.class);
+                                            startActivity(pqr);
+                                            finish();
+                                        }
+                                        else{
+                                            NormalUserActivity();
+                                            finish();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Toast.makeText(MainActivity.this, "An error occurred. Try again later.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        NormalUserActivity();
+                        finish();
+                    }
                 }
                 else{
                     //sign in failed
-                    Log.v("TAG3","Sign in with credentials failed :(");
+                    Toast.makeText(MainActivity.this, "Sign in to firebase failed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
